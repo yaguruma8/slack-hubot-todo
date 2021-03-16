@@ -5,7 +5,7 @@
 //     hubot done - TODO を完了にする
 //     hubot del - TODO を削除する
 //     hubot list - 未完了の TODO の一覧表示
-//     hubot donelist - 完了済の TODO の一覧表示
+//     hubot donelist - 完了した TODO の一覧表示
 
 'use strict';
 
@@ -32,10 +32,20 @@ module.exports = (robot) => {
     });
     // 未完了のTODOの一覧表示
     robot.respond(/list/i, (msg) => {
-        msg.send(`未完了のTODO:\n${todo.list().join('\n')}`);
+        const list = todo.list();
+        if (list.length === 0) {
+            msg.send('(TODOはありません)');
+        } else {
+            msg.send(`未完了のTODO:\n${list.join('\n')}`);
+        }
     });
     // 完了済のTODOの一覧表示
     robot.respond(/donelist/i, (msg) => {
-        msg.send(`完了したTODO:\n${todo.donelist().join('\n')}`);
+        const donelist = todo.donelist();
+        if (donelist.length === 0) {
+            msg.send('(完了したTODOはありません)');
+        } else {
+            msg.send(`完了したTODO:\n${donelist.join('\n')}`);
+        }
     });
 };
