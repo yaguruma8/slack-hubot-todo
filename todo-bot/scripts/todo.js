@@ -12,7 +12,10 @@
 const todo = require('todo');
 
 module.exports = (robot) => {
-    robot.respond(/hello (.+)/i, (msg) => {
-        msg.send(`Hello, World ${msg.match[1].trim()}!`);
+    // TODOの作成
+    robot.respond(/add (.+)/i, (msg) => {
+        const task = msg.match[1].trim();
+        todo.add(task);
+        msg.send(`TODOを追加しました: ${task}`);
     });
 };
