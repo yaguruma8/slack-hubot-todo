@@ -18,4 +18,24 @@ module.exports = (robot) => {
         todo.add(task);
         msg.send(`TODOを追加しました: ${task}`);
     });
+    // TODOの状態を未完了 -> 完了
+    robot.respond(/done (.+)/i, (msg) => {
+        const task = msg.match[1].trim();
+        todo.done(task);
+        msg.send(`TODOを完了しました: ${task}`);
+    });
+    // TODOの削除
+    robot.respond(/del (.+)/i, (msg) => {
+        const task = msg.match[1].trim();
+        todo.del(task);
+        msg.send(`TODOを削除しました: ${task}`);
+    });
+    // 未完了のTODOの一覧表示
+    robot.respond(/list/i, (msg) => {
+        msg.send(`未完了のTODO:\n${todo.list().join('\n')}`);
+    });
+    // 完了済のTODOの一覧表示
+    robot.respond(/donelist/i, (msg) => {
+        msg.send(`完了したTODO:\n${todo.donelist().join('\n')}`);
+    });
 };
