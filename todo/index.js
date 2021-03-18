@@ -1,9 +1,27 @@
 'use strict';
 
-// {name:string, done:boolean = false} []
-const tasks = [];
+const fs = require('fs')
+const fileName = './tasks.json';
 
-// add, list, donelist, done, del
+// {name:string, done:boolean = false} []
+let tasks = [];
+
+// tasks.jsonの読み込み
+try {
+    const data = fs.readFileSync(fileName,'utf8')
+    tasks = JSON.parse(data)
+} catch(e) {
+    console.log(`${fileName}から復元できませんでした。`)
+}
+
+
+/**
+ * タスクの一覧をjsonに書き込む
+ */
+function saveTasks() {
+    fs.writeFileSync(fileName, JSON.stringify(tasks),'utf8');
+}
+
 
 /**
  * タスクを追加
@@ -11,6 +29,7 @@ const tasks = [];
  */
 function add(task) {
     tasks.push({ name: task, done: false });
+    saveTasks();
 }
 
 /**
@@ -38,6 +57,7 @@ function done(task) {
     if (index !== -1) {
         tasks[index].done = true;
     }
+    saveTasks();
 }
 
 /**
@@ -49,6 +69,7 @@ function del(task) {
     if (index !== -1) {
         tasks.splice(index, 1);
     }
+    saveTasks()
 }
 
 module.exports = {
